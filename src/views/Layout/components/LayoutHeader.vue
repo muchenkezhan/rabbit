@@ -1,16 +1,9 @@
 <script setup>
-import { onMounted, ref } from "vue";
-import { getCategoryAPI } from "@/apis/layout.js";
-// 获取-全部分类(包含推荐商品)
-const categoryList = ref([])
-const getCategory = async () => {
-  const res = await getCategoryAPI()
-  categoryList.value = res.result
-}
-// 组件挂载完毕钩子
-onMounted(() => {
-  getCategory()
-})
+// 1.导入方法 use 打头的方法
+import { useCategoryStore } from "@/stores/category";
+// 2.执行方法得到实例对象
+const counterStore = useCategoryStore()
+
 
 </script>
 
@@ -24,7 +17,7 @@ onMounted(() => {
         <li class="home">
           <RouterLink to="/">首页</RouterLink>
         </li>
-        <li class="home" v-for="item in categoryList">
+        <li class="home" v-for="item in counterStore.categoryList">
           <RouterLink to="/">{{ item.name }}</RouterLink>
         </li>
       </ul>

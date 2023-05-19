@@ -19,6 +19,7 @@ const router = createRouter({
         {
           // 访问/的时候为空的路径默认渲染
           path: '',
+          name: 'home', // 给子路由命名
           component: Home,
 
         },
