@@ -15,10 +15,11 @@ export default defineConfig({
     vue(),
     // 配置elementui plus 按需导入
     AutoImport({
-      resolvers: [ElementPlusResolver()],
+    resolvers: [ElementPlusResolver()],
     }),
     Components({
-      resolvers: [ElementPlusResolver()],
+      // 配置elementPlus采用sass样式配色系统  通知element  用sass做替换
+      resolvers: [ElementPlusResolver({importStyle:"sass"})],
     }),
     // 配置elementui plus 按需导入
   ],
@@ -26,6 +27,16 @@ export default defineConfig({
     // 实际路径转换  @  ->  src
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
+    }
+  },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        // 自动导入定制化样式文件进行样式覆盖
+        additionalData: `
+          @use "@/styles/element/index.scss" as *;
+        `,
+      }
     }
   }
 })
