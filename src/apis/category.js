@@ -7,3 +7,14 @@ export const getCategoryAPI = (id)=>request({url:"/category",method:'get',params
 //  获取二级分类列表数据
 export const getCategoryFilterAPI = (id)=>request({url:"/category/sub/filter",method:'get',params:{id}});
 
+/**
+ * @description: 获取导航数据
+ * @data { 
+     categoryId: 1005000 ,
+     page: 1,
+     pageSize: 20,
+     sortField: 'publishTime' | 'orderNum' | 'evaluateNum'
+   } 
+ * @return {*}
+ */
+   export const getSubCategoryAPI = (data)=>request({url:"/category/goods/temporary",method:'POST',data});
