@@ -2,7 +2,7 @@
 import { onMounted, ref } from "vue";
 import { getCategoryAPI } from "@/apis/category";
 import { getBannerAPI } from "@/apis/home";
-import { useRoute } from "vue-router";
+import { useRoute,onBeforeRouteUpdate } from "vue-router";
 import GoodsItem from "@/views/Home/components/GoodsItem/index.vue";
 
 // 获取分类数据
@@ -23,14 +23,20 @@ const getBanner = async () => {
     bannerlist.value = res.result
 }
 
-const categorylist = async () => {
-    const res = await getCategoryAPI(route.params.id)
+const categorylist = async (id = route.params.id) => {
+    const res = await getCategoryAPI(id)
     categoryData.value = res.result
 }
 
 onMounted(() => {
     categorylist()
     getBanner()
+})
+
+//在当前路由改变，但是该组件被复用时调用
+onBeforeRouteUpdate((to)=>{
+    // 请求最新的列表数据
+    categorylist(to.params.id)
 })
 
 </script>
