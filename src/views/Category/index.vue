@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import { getCategoryAPI } from "@/apis/category";
+import { getBannerAPI } from "@/apis/home";
 import { useRoute } from "vue-router";
 
 // 获取数据
@@ -11,7 +12,15 @@ const route = useRoute()
 
 // route.params.id  : 会得到当前路由的params参数  相当于vue2中的this.$router.params.id
 
-
+// 准备state  存储轮播图
+const bannerlist = ref([])
+// 发送请求
+const getBanner = async () => {
+    const res = await getBannerAPI({
+        distributionSite: '2'
+    })
+    bannerlist.value = res.result
+}
 
 const categorylist = async () => {
     const res = await getCategoryAPI(route.params.id)
@@ -20,6 +29,7 @@ const categorylist = async () => {
 
 onMounted(() => {
     categorylist()
+    getBanner()
 })
 
 </script>
@@ -33,6 +43,14 @@ onMounted(() => {
                     <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
                     <el-breadcrumb-item>{{ categoryData.name }}</el-breadcrumb-item>
                 </el-breadcrumb>
+            </div>
+            <!-- 轮播图 -->
+            <div class="home-banner">
+                <el-carousel height="500px">
+                    <el-carousel-item v-for="item in bannerlist" :key="item">
+                        <img :src="item.imgUrl" alt="">
+                    </el-carousel-item>
+                </el-carousel>
             </div>
         </div>
     </div>
@@ -115,6 +133,19 @@ onMounted(() => {
 
     .bread-container {
         padding: 25px 0;
+    }
+}
+.home-banner {
+    width: 1240px;
+    height: 500px;
+    margin: auto 0;
+    left: 0;
+    top: 0;
+    z-index: 98;
+
+    img {
+        width: 100%;
+        height: 500px;
     }
 }
 </style>
