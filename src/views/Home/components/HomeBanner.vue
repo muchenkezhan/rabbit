@@ -1,3 +1,46 @@
+<script setup>
+import { onMounted, ref,reactive } from "vue";
+import { getBannerAPI } from "@/apis/home";
+// 准备state
+const bannerlist = ref([])
+// 发送请求
+const getBanner = async () => {
+    const res = await getBannerAPI()
+    bannerlist.value = res.result
+}
+// 组件挂载完毕
+onMounted(() => {
+    getBanner()
+})
+</script>
+
+
+
 <template>
-    <div>我是banner</div>
+    <div class="home-banner">
+        <el-carousel height="500px">
+            <el-carousel-item v-for="item in bannerlist" :key="item">
+                <img :src="item.imgUrl"
+                    alt="">
+            </el-carousel-item>
+        </el-carousel>
+    </div>
 </template>
+
+
+
+<style scoped lang='scss'>
+.home-banner {
+    width: 1240px;
+    height: 500px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 98;
+
+    img {
+        width: 100%;
+        height: 500px;
+    }
+}
+</style>
