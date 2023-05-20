@@ -1,44 +1,13 @@
 <script setup>
-import { onMounted, ref } from "vue";
-import { getCategoryAPI } from "@/apis/category";
-import { getBannerAPI } from "@/apis/home";
-import { useRoute,onBeforeRouteUpdate } from "vue-router";
+
 import GoodsItem from "@/views/Home/components/GoodsItem/index.vue";
+// banner业务逻辑
+import {useBanner} from "./compossables/useBanner.js";
+const {bannerlist} = useBanner()
 
-// 获取分类数据
-const categoryData = ref({})
-// 调用useRoute方法得到一个route实例对象
-// 相当于vue2中的：this.$route.params.id
-const route = useRoute()
-
-// route.params.id  : 会得到当前路由的params参数  相当于vue2中的this.$router.params.id
-
-// 准备state  存储轮播图
-const bannerlist = ref([])
-// 发送请求
-const getBanner = async () => {
-    const res = await getBannerAPI({
-        distributionSite: '2'
-    })
-    bannerlist.value = res.result
-}
-
-const categorylist = async (id = route.params.id) => {
-    const res = await getCategoryAPI(id)
-    categoryData.value = res.result
-}
-
-onMounted(() => {
-    categorylist()
-    getBanner()
-})
-
-//在当前路由改变，但是该组件被复用时调用
-onBeforeRouteUpdate((to)=>{
-    // 请求最新的列表数据
-    categorylist(to.params.id)
-})
-
+// categoy业务逻辑
+import {useCategory} from "./compossables/useCategory.js";
+const {categoryData} = useCategory()
 </script>
 
 <template>
