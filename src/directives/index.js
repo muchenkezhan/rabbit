@@ -11,12 +11,12 @@ export const lazyPlugin = {
             mounted(el, binding, vnode, prevVNode) {
                 // el: 指令绑定的元素
                 // binding： 一个对象，包含指令的一些属性值，如 name、value  （图片的url） 等。
-                console.log(el, binding.value);
+                // console.log(el, binding.value);
                 // vueuse核心代码
                 const {stop} = useIntersectionObserver(
                     el,
                     ([{ isIntersecting }]) => {
-                        console.log(isIntersecting);
+                        // console.log(isIntersecting);
                         if (isIntersecting) {
                             // 进入视口区域
                             el.src = binding.value

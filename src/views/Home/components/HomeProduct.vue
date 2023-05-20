@@ -34,7 +34,9 @@ onMounted(() => {
                     </strong>
                 </RouterLink>
                 <ul class="goods-list">
-                    <GoodsItem :good="good" ></GoodsItem>
+                    <li v-for="good in cate.goods" :key="good.id">
+                        <GoodsItem :good="good" ></GoodsItem>
+                    </li>
                 </ul>
             </div>
         </HomePanel>
