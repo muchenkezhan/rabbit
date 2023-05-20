@@ -28,6 +28,29 @@ const getCoodList = async () => {
     goodList.value = res.result.items
 }
 
+// tab切换回调
+const tabChange = () => {
+    getCoodList()
+    reqdData.value.page = 1
+}
+
+// 禁用加载
+const disabled = ref(false)
+
+// 无限加载
+const load = async () => {
+    // 获取下一页数据
+    reqdData.page++
+    const res = await getSubCategoryAPI(reqdData)
+    // 展开运算符   两个数据没有的都合并一起
+    goodList.value = [...goodList.value, ...res.result.items]
+    // 加载完毕
+    if (res.result.items.length == 0) {
+        disabled.value = true
+    }
+}
+
+
 // 挂载完毕
 onMounted(() => {
     getCoodList()
@@ -46,14 +69,17 @@ onMounted(() => {
             </el-breadcrumb>
         </div>
         <div class="sub-container">
-            <el-tabs>
+            <el-tabs v-model="reqdData.sortField" @tab-change="tabChange">
                 <el-tab-pane label="最新商品" name="publishTime"></el-tab-pane>
                 <el-tab-pane label="最高人气" name="orderNum"></el-tab-pane>
                 <el-tab-pane label="评论最多" name="evaluateNum"></el-tab-pane>
             </el-tabs>
-            <div class="body">
+            <div class="body" v-infinite-scroll="load" :infinite-scroll-disabled="disabled">
                 <!-- 商品列表-->
                 <GoodsItem v-for="goods in goodList" :good="goods" :key="goods.id"></GoodsItem>
+            </div>
+            <div class="tips" v-if="disabled">
+                加载完毕了
             </div>
         </div>
     </div>
@@ -62,6 +88,9 @@ onMounted(() => {
 
 
 <style lang="scss" scoped>
+.tips{
+    text-align: center;
+}
 .bread-container {
     padding: 25px 0;
     color: #666;
