@@ -21,62 +21,72 @@ const target = ref(null)
 // elementY：  鼠标y轴距离
 // isOutside:  鼠标是否移入元素内部
 const { elementX, elementY, isOutside } = useMouseInElement(target)
-
-const mouse_position = reactive({
-    left: '0',
-    top: '0'
-})
+// 控制遮罩
+const left = ref(0)
+const top = ref(0)
+// 控制大图
+const positionX = ref(0)
+const positionY = ref(0)
 
 // 监听属性
 // 监听鼠标位置
 watch([elementX, elementY], ([newCount, newName], [oldCount, oldName]) => {
-    // 处理x轴
-    if (elementX.value > 100 && elementX.value < 300) {
-        mouse_position.left = elementX.value - 100
-    }
-    //    处理y轴
-    if (elementY.value > 100 && elementX.value < 300) {
-        mouse_position.top = elementY.value - 100
-    }
-    // 处理边界值
-    if (elementX.value > 300) {
-        mouse_position.left = 200
-    }
-    if (elementX.value < 100) {
-        mouse_position.left = 0
-    }
-    if (elementY.value > 300) {
-        mouse_position.top = 200
-    }
-    if (elementY.value < 100) {
-        mouse_position.top = 0
-    }
+    //如果鼠标没有移入到盒子里面直接不执行后面的逻辑
+    if (!isOutside.value) {
+        // 处理x轴
+        if (elementX.value > 100 && elementX.value < 300) {
+            left.value = elementX.value - 100
+        }
+        //    处理y轴
+        if (elementY.value > 100 && elementY.value < 300) {
+            top.value = elementY.value - 100
+        }
+        // 处理边界值
+        if (elementX.value > 300) {
+            left.value = 200
+        }
+        if (elementX.value < 100) {
+            left.value = 0
+        }
+        if (elementY.value > 300) {
+            top.value = 200
+        }
+        if (elementY.value < 100) {
+            top.value = 0
+        }
 
+        positionX.value = -left.value * 2
+        positionY.value = -top.value * 2
+    }
 })
+
+
+
+
 </script>
 
 
 <template>
-    x:{{ elementX }}--Y:{{ elementY }}-
     <div class="goods-image">
         <!-- 左侧大图-->
         <div class="middle" ref="target">
             <img :src="imageList[activeIndex]" alt="" />
             <!-- 蒙层小滑块 -->
-            <div class="layer" :style="{ left: `${mouse_position.left}px`, top: `${mouse_position.top}px` }"></div>
+            <div v-show="!isOutside" class="layer" :style="{ left: `${left}px`, top: `${top}px` }"></div>
         </div>
         <!-- 小图列表 -->
         <ul class="small">
-            <li v-for="(img, i) in imageList" :key="i" @mouseenter="enterhandler(i)" :class="{ 'active': activeIndex === i }">
+            <li v-for="(img, i) in imageList" :key="i" @mouseenter="enterhandler(i)"
+                :class="{ 'active': activeIndex === i }">
                 <img :src="img" alt="" />
             </li>
         </ul>
         <!-- 放大镜大图 -->
         <div class="large" :style="[
             {
-                backgroundImage: `url(${imageList[0]})`,
-                backgroundPositionX: `0px`,
-                backgroundPositionY: `0px`,
+                backgroundImage: `url(${imageList[activeIndex]})`,
+                backgroundPositionX: `${positionX}px`,
+                backgroundPositionY: `${positionY}px`,
             },
         ]" v-show="!isOutside"></div>
     </div>
