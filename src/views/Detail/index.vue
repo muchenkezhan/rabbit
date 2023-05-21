@@ -4,6 +4,7 @@ import {getDetailAPI} from "@/apis/detail.js";
 import { useRoute } from "vue-router";
 import detailHot from "./components/detailHot.vue";
 import ImageView from "@/components/ImageView/index.vue";
+import XtxSku from "@/components/XtxSku/index.vue";
 const goods = ref({})
 // 创建路由实例  用来获取params参数
 const route = useRoute()
@@ -16,7 +17,10 @@ onMounted(() => {
     getGoods()
 })
 
-
+// sku规格操作时
+const skuChange=(sku)=>{
+  console.log(sku);
+}
 </script>
 
 <template>
@@ -91,7 +95,7 @@ onMounted(() => {
                 </dl>
               </div>
               <!-- sku组件 -->
-
+              <XtxSku :goods="goods" @change="skuChange"></XtxSku>
               <!-- 数据组件 -->
 
               <!-- 按钮组件 -->
