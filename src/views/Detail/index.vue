@@ -2,6 +2,7 @@
 import { ref,onMounted,reactive } from "vue";
 import {getDetailAPI} from "@/apis/detail.js";
 import { useRoute } from "vue-router";
+import detailHot from "./components/detailHot.vue";
 const goods = ref({})
 // 创建路由实例  用来获取params参数
 const route = useRoute()
@@ -19,7 +20,7 @@ onMounted(() => {
 
 <template>
   <div class="xtx-goods-page">
-    <div class="container">
+    <div class="container" v-if="goods.categories">
       <div class="bread-container">
         <el-breadcrumb separator=">">
             <!-- goods 一开始是空对象，无法访问报错
@@ -123,7 +124,10 @@ onMounted(() => {
             </div>
             <!-- 24热榜+专题推荐 -->
             <div class="goods-aside">
-
+                <!-- 24h榜 -->
+                <detailHot></detailHot>
+                <!-- 周 -->
+                <detailHot></detailHot>
             </div>
           </div>
         </div>
