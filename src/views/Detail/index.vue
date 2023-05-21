@@ -3,6 +3,7 @@ import { ref,onMounted,reactive } from "vue";
 import {getDetailAPI} from "@/apis/detail.js";
 import { useRoute } from "vue-router";
 import detailHot from "./components/detailHot.vue";
+import ImageView from "@/components/ImageView/index.vue";
 const goods = ref({})
 // 创建路由实例  用来获取params参数
 const route = useRoute()
@@ -41,7 +42,7 @@ onMounted(() => {
           <div class="goods-info">
             <div class="media">
               <!-- 图片预览区 -->
-
+              <ImageView></ImageView>
               <!-- 统计数量 -->
               <ul class="goods-sales">
                 <li>
