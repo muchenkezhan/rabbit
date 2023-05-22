@@ -20,7 +20,6 @@ const rules={
     agree:[
         {
             validator:(rule,value,callback)=>{
-                console.log(value);
                 // 自定义校验逻辑
                 // 勾选通过，不勾选不通过
                 if(value){
@@ -32,6 +31,20 @@ const rules={
         }
     ]
 
+}
+
+// 3.获取表单实例
+const formRef = ref(null)
+const login = ()=>{
+    formRef.value.validate((valid)=>{
+    // valid : 所有表单都通过校验才为 ： true
+        if(valid){
+            console.log('ok');
+        }else{
+            console.log('no');
+
+        }
+    })
 }
 </script>
 
@@ -58,7 +71,7 @@ const rules={
         <div class="account-box">
           <div class="form">
             <!-- 指定表单校验对象   :rules="rules" -->
-            <el-form label-position="right" label-width="60px" :model="form" :rules="rules"
+            <el-form ref="formRef" label-position="right" label-width="60px" :model="form" :rules="rules"
               status-icon>
               <!-- 指定表单域的校验字段名 prop="account" -->
               <el-form-item prop="account"  label="账户">
@@ -73,7 +86,7 @@ const rules={
                   我已同意隐私条款和服务条款
                 </el-checkbox>
               </el-form-item>
-              <el-button size="large" class="subBtn">点击登录</el-button>
+              <el-button size="large" class="subBtn" @click="login">点击登录</el-button>
             </el-form>
           </div>
         </div>
