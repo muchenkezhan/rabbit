@@ -23,10 +23,18 @@ export const useCartStore = defineStore('cart', () => {
         }
 
     }
+    // 3.导航栏购物车的删除功能
+    // 思路：1.使用删除下标：splice
+    const deleteCart = (index)=>{
+        cartList.value.splice(index, 1);
+    }
+    // 2.使用数组过滤方法  filter
+
 
     return {
         cartList,
-        addCatr
+        addCatr,
+        deleteCart
     }
 },{
     persist: true,

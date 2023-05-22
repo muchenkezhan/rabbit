@@ -4,6 +4,12 @@ import { useCartStore } from "@/stores/cartStore";
 // 执行方法得到实例对象
 const CatrStore = useCartStore()
 
+// 点击删除
+const deleteCart =(index)=>{
+    console.log(index);
+    CatrStore.deleteCart(index)
+}
+
 </script>
 
 <template>
@@ -14,7 +20,8 @@ const CatrStore = useCartStore()
     <div class="layer">
       <div class="list">
         
-        <div class="item" v-for="i in CatrStore.cartList" :key="i">
+        <div v-show="CatrStore.cartList.length < 1"><p>还没有选中的商品哦！</p></div>
+        <div class="item" v-for="(i,index) in CatrStore.cartList" :key="i">
           <RouterLink to="">
             <img :src="i.picture" alt="" />
             <div class="center">
@@ -28,7 +35,7 @@ const CatrStore = useCartStore()
               <p class="count">x{{ i.count }}</p>
             </div>
           </RouterLink>
-          <i class="iconfont icon-close-new" @click="store.delCart(i.skuId)"></i>
+          <i class="iconfont icon-close-new" @click="deleteCart(index)"></i>
         </div>
        
       </div>
