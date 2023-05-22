@@ -54,13 +54,23 @@ export const useCartStore = defineStore('cart', () => {
         item.selected = selected
     }
 
+    // 是否全选 计算属性
+    const isAll =computed(()=>cartList.value.every(item=>item.selected))
+    // 全选功能回调函数
+    const isAllCheck =(e)=>{
+        cartList.value.forEach(item=>{
+            item.selected = e
+        })
+    }
     return {
         cartList,
         addCatr,
         deleteCart,
         allCount,
         allPrice,
-        ischeckbox
+        ischeckbox,
+        isAll,
+        isAllCheck
     }
 }, {
     persist: true,

@@ -8,6 +8,10 @@ const singleChange = (i,selected) => {
     cartStore.ischeckbox(i.skuId,selected)
 }
 
+// 全选功能
+const allCheck =(e)=>{
+    cartStore.isAllCheck(e)
+}
 </script>
 
 <template>
@@ -18,7 +22,7 @@ const singleChange = (i,selected) => {
                     <thead>
                         <tr>
                             <th width="120">
-                                <el-checkbox />
+                                <el-checkbox :model-value="cartStore.isAll" @change="allCheck"/>
                             </th>
                             <th width="400">商品信息</th>
                             <th width="220">单价</th>
