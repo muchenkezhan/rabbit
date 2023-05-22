@@ -14,8 +14,14 @@ import { lazyPlugin } from "@/directives";
 import { componenPlugin } from "@/components/index.js";
 
 const app = createApp(App)
+// pinia持久化存储
+const pinia = createPinia()
+// 注册持久化插件
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
+pinia.use(piniaPluginPersistedstate)
 
-app.use(createPinia())
+
+app.use(pinia)
 app.use(router)
 app.use(lazyPlugin)
 app.use(componenPlugin)

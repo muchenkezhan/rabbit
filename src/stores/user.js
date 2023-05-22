@@ -2,6 +2,7 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import { LoginlAPI } from "@/apis/user";
+
 export const useUserStore = defineStore('user', () => {
     // 1.定义数据管理用户数据的state
     const usereInfo = ref(0)
@@ -10,9 +11,12 @@ export const useUserStore = defineStore('user', () => {
         const res = await LoginlAPI({account,password})
         usereInfo.value=res.result
     }
+    
     // 3.以对象格式把state和action  return出去
     return {
         usereInfo,
         getusereInfo
     }
-})
+},  {
+    persist: true,
+  })
