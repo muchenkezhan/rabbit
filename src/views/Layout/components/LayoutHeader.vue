@@ -1,4 +1,5 @@
 <script setup>
+import HeaderCart from "./HeaderCart/index.vue";
 // 1.导入方法 use 打头的方法
 import { useCategoryStore } from "@/stores/category";
 // 2.执行方法得到实例对象
@@ -26,7 +27,7 @@ const counterStore = useCategoryStore()
         <input type="text" placeholder="搜一搜">
       </div>
       <!-- 头部购物车 -->
-
+      <HeaderCart></HeaderCart>
     </div>
   </header>
 </template>
