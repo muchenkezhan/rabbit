@@ -1,19 +1,23 @@
 <script setup>
 import { useCartStore } from "@/stores/cartStore";
 const cartStore = useCartStore()
-const cartList = cartStore.cartList
 
 // 点击取消选中
-const singleChange = (i,selected) => {
-    cartStore.ischeckbox(i.skuId,selected)
+const singleChange = (i, selected) => {
+    cartStore.ischeckbox(i.skuId, selected)
 }
 
 // 全选功能
-const allCheck =(e)=>{
+const allCheck = (e) => {
     cartStore.isAllCheck(e)
 }
 
+// 删除商品
+const delCart = async (i, index) => {
+    await cartStore.deleteCart(index, i.skuId)
+}
 
+// 商品数量
 </script>
 
 <template>
@@ -24,7 +28,7 @@ const allCheck =(e)=>{
                     <thead>
                         <tr>
                             <th width="120">
-                                <el-checkbox :model-value="cartStore.isAll" @change="allCheck"/>
+                                <el-checkbox :model-value="cartStore.isAll" @change="allCheck" />
                             </th>
                             <th width="400">商品信息</th>
                             <th width="220">单价</th>
@@ -35,7 +39,7 @@ const allCheck =(e)=>{
                     </thead>
                     <!-- 商品列表 -->
                     <tbody>
-                        <tr v-for="i in cartList" :key="i.id">
+                        <tr v-for="(i, index) in cartStore.cartList" :key="i.id">
                             <td>
                                 <!-- 单选框 -->
                                 <!-- 
@@ -44,7 +48,7 @@ const allCheck =(e)=>{
                                         return singleChange(i,selected)
                                     }
                                  -->
-                                <el-checkbox :model-value="i.selected" @change="(selected)=>singleChange(i,selected)" />
+                                <el-checkbox :model-value="i.selected" @change="(selected) => singleChange(i, selected)" />
                             </td>
                             <td>
                                 <div class="goods">
@@ -69,7 +73,7 @@ const allCheck =(e)=>{
                             <td class="tc">
                                 <p>
                                     <el-popconfirm title="确认删除吗?" confirm-button-text="确认" cancel-button-text="取消"
-                                        @confirm="delCart(i)">
+                                        @confirm="delCart(i, index)">
                                         <template #reference>
                                             <a href="javascript:;">删除</a>
                                         </template>
@@ -77,7 +81,7 @@ const allCheck =(e)=>{
                                 </p>
                             </td>
                         </tr>
-                        <tr v-if="cartList.length === 0">
+                        <tr v-if="cartStore.cartList.length === 0">
                             <td colspan="6">
                                 <div class="cart-none">
                                     <el-empty description="购物车列表为空">
@@ -97,7 +101,7 @@ const allCheck =(e)=>{
                     <span class="red">¥ {{ cartStore.selectedPrice }} </span>
                 </div>
                 <div class="total">
-                    <el-button size="large" type="primary">下单结算</el-button>
+                    <el-button size="large" type="primary" @click="$router.push('/checkout')">下单结算</el-button>
                 </div>
             </div>
         </div>
