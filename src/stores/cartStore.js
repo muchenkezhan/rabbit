@@ -1,25 +1,38 @@
 // 封装购物车模块
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
-
+import { useUserStore } from "./user";
+import { insertCartAPI,dindNewCartAPI } from "@/apis/cart";
 export const useCartStore = defineStore('cart', () => {
+    const userStore = useUserStore()
+    const isLogin = computed(() => userStore.usereInfo.token)
     // 1.定义state  购物车列表
     const cartList = ref([])
     // 2.定义action - 方法
-    const addCatr = (goods) => {
-        // 添加购物车操作
-        // 已添加  count+1
-        // 思路：匹配传递过来的skuid是否在state数组中存在
-        // 未添加-加入购物车
-        const item = cartList.value.find(item => {
-            return goods.skuId === item.skuId
-        })
-        if (item) {
-            //加购了
-            item.count++
+    const addCatr = async (goods) => {
+        if (isLogin.value) {
+            // 登录之后的购物车逻辑
+            // 加入购物车接口
+            await insertCartAPI(goods)
+            // 获取购物车列表接口
+            const res = await dindNewCartAPI()
+            cartList.value = res.result
+
         } else {
-            //没有加购
-            cartList.value.push(goods)
+            // 添加购物车操作
+            // 已添加  count+1
+            // 思路：匹配传递过来的skuid是否在state数组中存在
+            // 未添加-加入购物车
+            const item = cartList.value.find(item => {
+                return goods.skuId === item.skuId
+            })
+            if (item) {
+                //加购了
+                item.count++
+            } else {
+                //没有加购
+                cartList.value.push(goods)
+            }
         }
 
     }
@@ -49,26 +62,26 @@ export const useCartStore = defineStore('cart', () => {
     const ischeckbox = (skuId, selected) => {
         // 通过skuid找到需要修改的数据,把selected修改为传来的状态
         const item = cartList.value.find(item => {
-           return  item.skuId === skuId
+            return item.skuId === skuId
         })
         item.selected = selected
     }
 
     // 是否全选 计算属性
-    const isAll =computed(()=>cartList.value.every(item=>item.selected))
+    const isAll = computed(() => cartList.value.every(item => item.selected))
     // 全选功能回调函数
-    const isAllCheck =(e)=>{
-        cartList.value.forEach(item=>{
+    const isAllCheck = (e) => {
+        cartList.value.forEach(item => {
             item.selected = e
         })
     }
     // 已选中的数量
-    const selectedCount = computed(()=>{
+    const selectedCount = computed(() => {
         // filter： 获取所有满足条件的元素,提取成数组
-        const filteredItem = cartList.value.filter((item)=>item.selected);
+        const filteredItem = cartList.value.filter((item) => item.selected);
         // 拿到数组之后进行链式操作，把每个数组里面的 数量 提取出来然后相加
         console.log(filteredItem);
-        return filteredItem.reduce((a,c)=>{
+        return filteredItem.reduce((a, c) => {
             return a + c.count
         }, 0)
     })
@@ -76,11 +89,11 @@ export const useCartStore = defineStore('cart', () => {
     const selectedPrice = computed(() => {
         const filteredItems = cartList.value.filter(item => item.selected);
         return filteredItems.reduce((total, item) => {
-          return total + item.count * item.price;
+            return total + item.count * item.price;
         }, 0);
-      });
-      
-    
+    });
+
+
     return {
         cartList,
         addCatr,
