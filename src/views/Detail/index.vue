@@ -3,6 +3,7 @@ import { ref,onMounted,reactive } from "vue";
 import {getDetailAPI} from "@/apis/detail.js";
 import { useRoute } from "vue-router";
 import detailHot from "./components/detailHot.vue";
+import { useCartStore } from "@/stores/cartStore";
 const goods = ref({})
 // 创建路由实例  用来获取params参数
 const route = useRoute()
@@ -16,9 +17,51 @@ onMounted(() => {
 })
 
 // sku规格操作时
+let skuObj = {}
 const skuChange=(sku)=>{
-  console.log(sku);
+  skuObj=sku
+  console.log(skuObj);
 }
+
+// count 适配数量
+const count=ref(1)
+const handleChange=()=>{
+  console.log(count.value);
+}
+
+// 添加购物车
+const cartStore = useCartStore()
+const addCart= ()=>{
+  if(skuObj.skuId){
+    // 规格选择了
+    cartStore.addCatr({
+      id:goods.value.id,
+      name:goods.value.name,
+      // 商品图片
+      picture:goods.value.mainPictures[0],
+      // 价格
+      price:goods.value.price,
+      // 数量
+      count:count.value,
+      // skuId
+      skuId:skuObj.skuId,
+      // 商品属性："颜色：黑色牛皮 尺码：40"
+      attrsText:skuObj.specsText,
+      // 当前商品是否选中
+      selected:true
+
+
+
+    })
+  }else{
+    // 规格没有选择
+    ElMessage({
+    message: '请选择规格',
+    type: 'success',
+  })
+  }
+}
+
 </script>
 
 <template>
@@ -95,10 +138,10 @@ const skuChange=(sku)=>{
               <!-- sku组件 -->
               <XtxSku :goods="goods" @change="skuChange"></XtxSku>
               <!-- 数据组件 -->
-
+              <el-input-number v-model="count" @change="handleChange" />
               <!-- 按钮组件 -->
               <div>
-                <el-button size="large" class="btn">
+                <el-button size="large" class="btn" @click="addCart">
                   加入购物车
                 </el-button>
               </div>
