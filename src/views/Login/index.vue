@@ -1,7 +1,11 @@
 <script setup>
-import { LoginlAPI } from "@/apis/user";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+// 登录接口
+import { useUserStore } from "@/stores/user";
+// 拿到实例对象
+const userStore = useUserStore()
+
 // element提示
 import { ElMessage } from 'element-plus'
 import 'element-plus/theme-chalk/el-message.css'
@@ -10,8 +14,8 @@ import 'element-plus/theme-chalk/el-message.css'
 // 表单校验（账户 +  密码）
 // 1.表单对象
 const form = ref({
-    account: '',
-    password: '',
+    account: 'heima282',
+    password: 'hm#qd@23!',
     agree: true
 })
 
@@ -41,20 +45,18 @@ const rules = {
 }
 
 // 3.获取表单实例
-const router =useRouter()
+const router = useRouter()
 const formRef = ref(null)
 const login = () => {
-    const {account,password}=form.value
+    const { account, password } = form.value
     formRef.value.validate(async (valid) => {
         // valid : 所有表单都通过校验才为 ： true
         if (valid) {
-            const res =await LoginlAPI({account,password})
-            if(res.code == "1"){
-                // 1.提示用户
-                ElMessage({type:'success',message:'登录成功'})
-                // 2.跳转首页
-                router.replace({path :'/'})
-            }
+            await userStore.getusereInfo({ account, password })
+            // 1.提示用户
+            ElMessage({ type: 'success', message: '登录成功' })
+            // 2.跳转首页
+            router.replace({ path: '/' })
         } else {
             console.log('no');
 
