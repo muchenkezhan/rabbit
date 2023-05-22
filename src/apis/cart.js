@@ -8,3 +8,6 @@ export const dindNewCartAPI = ()=>request({url:"/member/cart",method:'get'});
 
 // 删除商品
 export const delCartAPI = (ids)=>request({url:"/member/cart",method:'delete',data:{ids}});
+
+// 合并购物车接口
+export const mergeCartAPI = (data)=>request({url:"/member/cart/merge",method:'post',data});
