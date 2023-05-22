@@ -1,5 +1,5 @@
 // 封装购物车模块
-import { ref,computed } from 'vue'
+import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 
 export const useCartStore = defineStore('cart', () => {
@@ -9,15 +9,15 @@ export const useCartStore = defineStore('cart', () => {
     const addCatr = (goods) => {
         // 添加购物车操作
         // 已添加  count+1
-         // 思路：匹配传递过来的skuid是否在state数组中存在
+        // 思路：匹配传递过来的skuid是否在state数组中存在
         // 未添加-加入购物车
         const item = cartList.value.find(item => {
-           return goods.skuId === item.skuId
+            return goods.skuId === item.skuId
         })
-        if(item){
+        if (item) {
             //加购了
             item.count++
-        }else{
+        } else {
             //没有加购
             cartList.value.push(goods)
         }
@@ -25,32 +25,43 @@ export const useCartStore = defineStore('cart', () => {
     }
     // 3.导航栏购物车的删除功能
     // 思路：1.使用删除下标：splice
-    const deleteCart = (index)=>{
+    const deleteCart = (index) => {
         cartList.value.splice(index, 1);
     }
     // 2.使用数组过滤方法  filter
 
     // 计算属性
     // 1.总数量  所有项的count之和
-    const allCount = computed(()=>{
-        return  cartList.value.reduce((a,c)=>{
-          return a+c.count
-        },0)
+    const allCount = computed(() => {
+        return cartList.value.reduce((a, c) => {
+            return a + c.count
+        }, 0)
     })
 
     // 2.总价  所有项的count*price
-    const  allPrice= computed(()=>{
-        return  cartList.value.reduce((a,c)=>{
-            return a+c.count * c.price
-        },0)
+    const allPrice = computed(() => {
+        return cartList.value.reduce((a, c) => {
+            return a + c.count * c.price
+        }, 0)
     })
+
+    // 点击选中功能
+    const ischeckbox = (skuId, selected) => {
+        // 通过skuid找到需要修改的数据,把selected修改为传来的状态
+        const item = cartList.value.find(item => {
+           return  item.skuId === skuId
+        })
+        item.selected = selected
+    }
+
     return {
         cartList,
         addCatr,
         deleteCart,
         allCount,
-        allPrice
+        allPrice,
+        ischeckbox
     }
-},{
+}, {
     persist: true,
 })
