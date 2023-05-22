@@ -13,7 +13,7 @@ export const useUserStore = defineStore('user', () => {
     }
     // 退出时清除用户信息
     const LoginOut =()=>{
-        usereInfo.value = ''
+        usereInfo.value = {}
     }
     // 3.以对象格式把state和action  return出去
     return {
