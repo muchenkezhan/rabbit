@@ -62,6 +62,25 @@ export const useCartStore = defineStore('cart', () => {
             item.selected = e
         })
     }
+    // 已选中的数量
+    const selectedCount = computed(()=>{
+        // filter： 获取所有满足条件的元素,提取成数组
+        const filteredItem = cartList.value.filter((item)=>item.selected);
+        // 拿到数组之后进行链式操作，把每个数组里面的 数量 提取出来然后相加
+        console.log(filteredItem);
+        return filteredItem.reduce((a,c)=>{
+            return a + c.count
+        }, 0)
+    })
+    // 已选中商品合计
+    const selectedPrice = computed(() => {
+        const filteredItems = cartList.value.filter(item => item.selected);
+        return filteredItems.reduce((total, item) => {
+          return total + item.count * item.price;
+        }, 0);
+      });
+      
+    
     return {
         cartList,
         addCatr,
@@ -70,7 +89,9 @@ export const useCartStore = defineStore('cart', () => {
         allPrice,
         ischeckbox,
         isAll,
-        isAllCheck
+        isAllCheck,
+        selectedCount,
+        selectedPrice
     }
 }, {
     persist: true,
