@@ -11,11 +11,15 @@ export const useUserStore = defineStore('user', () => {
         const res = await LoginlAPI({account,password})
         usereInfo.value=res.result
     }
-    
+    // 退出时清除用户信息
+    const LoginOut =()=>{
+        usereInfo.value = ''
+    }
     // 3.以对象格式把state和action  return出去
     return {
         usereInfo,
-        getusereInfo
+        getusereInfo,
+        LoginOut
     }
 },  {
     persist: true,
