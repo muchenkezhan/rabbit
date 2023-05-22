@@ -5,9 +5,8 @@ import { useCartStore } from "@/stores/cartStore";
 const CatrStore = useCartStore()
 
 // 点击删除
-const deleteCart =(index)=>{
-    console.log(index);
-    CatrStore.deleteCart(index)
+const deleteCart =(index,i)=>{
+    CatrStore.deleteCart(index,i.skuId)
 }
 
 </script>
@@ -35,7 +34,7 @@ const deleteCart =(index)=>{
               <p class="count">x{{ i.count }}</p>
             </div>
           </RouterLink>
-          <i class="iconfont icon-close-new" @click="deleteCart(index)"></i>
+          <i class="iconfont icon-close-new" @click="deleteCart(index,i)"></i>
         </div>
        
       </div>

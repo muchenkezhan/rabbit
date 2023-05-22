@@ -2,10 +2,18 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { useUserStore } from "./user";
-import { insertCartAPI,dindNewCartAPI } from "@/apis/cart";
+import { insertCartAPI, dindNewCartAPI, delCartAPI } from "@/apis/cart";
 export const useCartStore = defineStore('cart', () => {
     const userStore = useUserStore()
     const isLogin = computed(() => userStore.usereInfo.token)
+    
+    // 获取最新购物车列表函数
+    const updateNewList = async () => {
+        // 获取购物车列表接口
+        const res = await dindNewCartAPI()
+        cartList.value = res.result
+    }
+
     // 1.定义state  购物车列表
     const cartList = ref([])
     // 2.定义action - 方法
@@ -15,8 +23,7 @@ export const useCartStore = defineStore('cart', () => {
             // 加入购物车接口
             await insertCartAPI(goods)
             // 获取购物车列表接口
-            const res = await dindNewCartAPI()
-            cartList.value = res.result
+            updateNewList()
 
         } else {
             // 添加购物车操作
@@ -38,11 +45,24 @@ export const useCartStore = defineStore('cart', () => {
     }
     // 3.导航栏购物车的删除功能
     // 思路：1.使用删除下标：splice
-    const deleteCart = (index) => {
-        cartList.value.splice(index, 1);
-    }
     // 2.使用数组过滤方法  filter
+    const deleteCart = async (index, skuId) => {
+        if (isLogin.value) {
+            // 删除接口购物车数据
+            await delCartAPI([skuId])
+            // 获取购物车列表接口
+            updateNewList()
 
+        } else {
+            // 删除本地购物车数据
+            cartList.value.splice(index, 1);
+        }
+    }
+
+    //清除购物车
+    const clearCart =()=>{
+        cartList.value = []
+    }
     // 计算属性
     // 1.总数量  所有项的count之和
     const allCount = computed(() => {
@@ -104,7 +124,8 @@ export const useCartStore = defineStore('cart', () => {
         isAll,
         isAllCheck,
         selectedCount,
-        selectedPrice
+        selectedPrice,
+        clearCart
     }
 }, {
     persist: true,

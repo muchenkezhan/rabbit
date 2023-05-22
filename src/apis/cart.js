@@ -5,3 +5,6 @@ export const insertCartAPI = ({skuId,count})=>request({url:"/member/cart",method
 
 // 获取给车列表
 export const dindNewCartAPI = ()=>request({url:"/member/cart",method:'get'});
+
+// 删除商品
+export const delCartAPI = (ids)=>request({url:"/member/cart",method:'delete',data:{ids}});
