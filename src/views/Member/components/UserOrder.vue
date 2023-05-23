@@ -41,6 +41,21 @@ const pageCheck = (page) => {
   params.value.page=page
   getOrder()
 }
+
+  // 创建格式化函数
+  // 根据返回的状态码，输出对应的中文状态
+  const fomartPayState = (payState) => {
+    const stateMap = {
+      1: '待付款',
+      2: '待发货',
+      3: '待收货',
+      4: '待评价',
+      5: '已完成',
+      6: '已取消'
+    }
+    return stateMap[payState]
+  }
+
 </script>
 
 <template>
@@ -86,7 +101,7 @@ const pageCheck = (page) => {
                 </ul>
               </div>
               <div class="column state">
-                <p>{{ order.orderState }}</p>
+                <p>{{ fomartPayState(order.orderState) }}</p>
                 <p v-if="order.orderState === 3">
                   <a href="javascript:;" class="green">查看物流</a>
                 </p>
