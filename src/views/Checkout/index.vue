@@ -18,7 +18,6 @@ const getCheckInfo = async () => {
         return item.isDefault === 0
     })
     curAddress.value = item
-    console.log(res);
 }
 
 onMounted(() => {
