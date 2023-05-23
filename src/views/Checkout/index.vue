@@ -30,7 +30,7 @@ const switchAddress = (item) => {
     activeAddress.value = item
 }
 const showDialog = ref(false)
-
+// 地址确认按钮
 const confirm = () => {
     curAddress.value = activeAddress.value,
         showDialog.value = false,
