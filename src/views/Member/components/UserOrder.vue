@@ -1,5 +1,5 @@
 <script setup>
-import { ref,onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import { getUserOrder } from "@/apis/order";
 
 // tab列表
@@ -14,6 +14,7 @@ const tabTypes = [
 ]
 // 订单列表
 const orderList = ref([])
+const total = ref(0)
 const params = ref({
   orderState: 0,
   page: 1,
@@ -22,6 +23,7 @@ const params = ref({
 const getOrder = async () => {
   const res = await getUserOrder(params.value)
   orderList.value = res.result.items
+  total.value = res.result.counts
 }
 
 onMounted(() => {
@@ -29,11 +31,16 @@ onMounted(() => {
 })
 
 // tab回调
-const tabChange=(type)=>{
+const tabChange = (type) => {
   params.value.orderState = type
   getOrder()
 }
 
+// 页数切换
+const pageCheck = (page) => {
+  params.value.page=page
+  getOrder()
+}
 </script>
 
 <template>
@@ -115,7 +122,8 @@ const tabChange=(type)=>{
           </div>
           <!-- 分页 -->
           <div class="pagination-container">
-            <el-pagination background layout="prev, pager, next" />
+            <el-pagination :total="total" :page-size="params.pageSize" @current-change="pageCheck" background
+              layout="prev, pager, next" />
           </div>
         </div>
       </div>
