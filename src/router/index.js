@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory ,createWebHashHistory} from 'vue-router'
 import routes from "./routers";
+import { useRoute } from "vue-router";
 // 引入仓库
 import { useUserStore } from "@/stores/user";
 
@@ -19,6 +20,7 @@ let router = new createRouter({
 
 router.beforeEach((to, from, next) => {
   const userInfo = useUserStore()
+  const route =useRoute()
   const token = userInfo.usereInfo.token
   if (token) {
     // 判断是否需要身份验证
@@ -40,7 +42,7 @@ router.beforeEach((to, from, next) => {
       // 提示
       ElMessage('还未登录哦，请先登录！.')
       //    把未登录的时候去向的地址存储在地址栏中url?=
-      next('/login?redirect=' + toPath);
+      next('/login?redirect='+toPath);
     } else {
       next();
     }

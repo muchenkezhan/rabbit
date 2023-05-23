@@ -19,86 +19,92 @@ import Member from '@/views/Member/index.vue'
 import UserInfo from '@/views/Member/components/UserInfo.vue'
 import UserOrder from '@/views/Member/components/UserOrder.vue'
 import NotFound from '@/views/NotFound.vue';
+import Sku from "@/views/Sku/index.vue";
 
 const routes = [
-    {
-      path: '/',
-      component: Layout,
-      name: 'layout',
-      children: [
-        {
-          // 访问/的时候为空的路径默认渲染
-          path: '',
-          name: 'home', // 给子路由命名
-          component: Home,
+  {
+    path: '/',
+    component: Layout,
+    name: 'layout',
+    children: [
+      {
+        // 访问/的时候为空的路径默认渲染
+        path: '',
+        name: 'home', // 给子路由命名
+        component: Home,
 
-        },
-        {
-          path: 'category/:id',
-          component: Category,
+      },
+      {
+        path: 'category/:id',
+        component: Category,
 
-        },
-        {
-          path: 'category/sub/:id',
-          component: subCategory,
+      },
+      {
+        path: 'category/sub/:id',
+        component: subCategory,
 
-        },
-        {
-          path: 'detail/:id',
-          component: Detail,
+      },
+      {
+        path: 'detail/:id',
+        component: Detail,
 
-        },
-        {
-          path: 'cartlist',
-          component: CartList,
+      },
+      {
+        path: 'cartlist',
+        component: CartList,
 
-        },
-        {
-          path: 'checkout',
-          component: Checkout,
+      },
+      {
+        path: 'checkout',
+        component: Checkout,
 
-        },
-        {
-          path: 'pay',
-          component: Pay,
-          meta: { requiresAuth: true }
+      },
+      {
+        path: 'pay',
+        component: Pay,
+        meta: { requiresAuth: true }
 
-        },
-        {
-          path: 'paycallback',
-          component: PayBack,
-          meta: { requiresAuth: true }
-        },
-        {
-          path: 'member',
-          component: Member,
-          meta: { requiresAuth: true },
-          children:[
-            {
-              path: '',
-              component: UserInfo,
-              meta: { requiresAuth: true }
-              
-            },
-            {
-              path: 'order',
-              component: UserOrder,
-              meta: { requiresAuth: true }
-              
-            },
+      },
+      {
+        path: 'paycallback',
+        component: PayBack,
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'member',
+        component: Member,
+        meta: { requiresAuth: true },
+        children: [
+          {
+            path: '',
+            component: UserInfo,
+            meta: { requiresAuth: true }
+
+          },
+          {
+            path: 'order',
+            component: UserOrder,
+            meta: { requiresAuth: true }
+
+          },
         ]
-        },
-        {
-          path: '/:pathMatch(.*)*',
-          name: 'NotFound',
-          component: NotFound
-        },
-      ]
-    },
-    {
-      path: '/login',
-      component: Login,
-      name: 'login'
-    },
-  ]
-  export default routes
+      },
+      {
+        path: '/:pathMatch(.*)*',
+        name: 'NotFound',
+        component: NotFound
+      },
+    ]
+  },
+  {
+    path: '/login',
+    component: Login,
+    name: 'login'
+  },
+  {
+    // 封装sku组件的路由
+    path: '/sku',
+    component: Sku,
+  },
+]
+export default routes
