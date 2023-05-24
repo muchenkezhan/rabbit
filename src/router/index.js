@@ -48,6 +48,11 @@ router.beforeEach((to, from, next) => {
     }
   }
 })
-
+//全局-后置-路由守卫：
+//标题放在后置的原因是 ：  如果开启了身份验证的话放在了前置就会出现页面不显示标题就显示了
+router.afterEach((to,form)=>{
+       // 根据点击的路由更改当前标题
+       document.title=to.meta.title || '德雨-系统首页'
+})
 
 export default router;

@@ -32,11 +32,15 @@ const routes = [
         path: '',
         name: 'home', // 给子路由命名
         component: Home,
+        meta:{
+          title:'小兔鲜 送啥都快',
+      },
 
       },
       {
         path: 'category/:id',
         component: Category,
+
 
       },
       {
@@ -52,6 +56,9 @@ const routes = [
       {
         path: 'cartlist',
         component: CartList,
+        meta:{
+          title:'购物车列表',
+      },
 
       },
       {
@@ -62,29 +69,29 @@ const routes = [
       {
         path: 'pay',
         component: Pay,
-        meta: { requiresAuth: true }
+        meta: { requiresAuth: true,title:'支付中心' }
 
       },
       {
         path: 'paycallback',
         component: PayBack,
-        meta: { requiresAuth: true }
+        meta: { requiresAuth: true,title:'支付状态' }
       },
       {
         path: 'member',
         component: Member,
-        meta: { requiresAuth: true },
+        meta: { requiresAuth: true,title:'个人中心' },
         children: [
           {
             path: '',
             component: UserInfo,
-            meta: { requiresAuth: true }
+            meta: { requiresAuth: true,title:'个人中心' }
 
           },
           {
             path: 'order',
             component: UserOrder,
-            meta: { requiresAuth: true }
+            meta: { requiresAuth: true,title:'我的订单' }
 
           },
         ]
@@ -92,7 +99,8 @@ const routes = [
       {
         path: '/:pathMatch(.*)*',
         name: 'NotFound',
-        component: NotFound
+        component: NotFound,
+        meta: { title:'我的订单' }
       },
     ]
   },
