@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory ,createWebHashHistory} from 'vue-router'
 import routes from "./routers";
-import { useRoute } from "vue-router";
 // 引入仓库
 import { useUserStore } from "@/stores/user";
 
@@ -20,7 +19,6 @@ let router = new createRouter({
 
 router.beforeEach((to, from, next) => {
   const userInfo = useUserStore()
-  const route =useRoute()
   const token = userInfo.usereInfo.token
   if (token) {
     // 判断是否需要身份验证
