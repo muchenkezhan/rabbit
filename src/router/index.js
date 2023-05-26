@@ -1,9 +1,5 @@
 import { createRouter, createWebHistory ,createWebHashHistory} from 'vue-router'
 import routes from "./routers";
-<<<<<<< HEAD
-import { useRoute } from "vue-router";
-=======
->>>>>>> master
 // 引入仓库
 import { useUserStore } from "@/stores/user";
 
@@ -23,10 +19,6 @@ let router = new createRouter({
 
 router.beforeEach((to, from, next) => {
   const userInfo = useUserStore()
-<<<<<<< HEAD
-  const route =useRoute()
-=======
->>>>>>> master
   const token = userInfo.usereInfo.token
   if (token) {
     // 判断是否需要身份验证
@@ -54,15 +46,11 @@ router.beforeEach((to, from, next) => {
     }
   }
 })
-<<<<<<< HEAD
-
-=======
 //全局-后置-路由守卫：
 //标题放在后置的原因是 ：  如果开启了身份验证的话放在了前置就会出现页面不显示标题就显示了
 router.afterEach((to,form)=>{
        // 根据点击的路由更改当前标题
        document.title=to.meta.title || '德雨-系统首页'
 })
->>>>>>> master
 
 export default router;
