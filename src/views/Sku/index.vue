@@ -1,59 +1,22 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import axios from 'axios'
-<<<<<<< HEAD
-=======
 import powerSet from "./power-set";
->>>>>>> master
 // 商品数据
 const goods = ref({})
 const getGoods = async () => {
   // 1135076  初始化就有无库存的规格
   // 1369155859933827074 更新之后有无库存项（蓝色-20cm-中国）
-<<<<<<< HEAD
-  const res = await axios.get('http://pcapi-xiaotuxian-front-devtest.itheima.net/goods?id=1369155859933827074')
-  goods.value = res.data.result
-=======
   const res = await axios.get('http://pcapi-xiaotuxian-front-devtest.itheima.net/goods?id=1135076')
   goods.value = res.data.result
   const pathMap = getPathMap(goods.value)
   console.log(pathMap);
   initDisabledState(goods.value.specs,pathMap)
 
->>>>>>> master
 }
 onMounted(() => getGoods())
 
 // 点击active
-<<<<<<< HEAD
-const changeSelectedStatus = (item,val)=>{
-    // item： 同排对象
-    // val： 点击对象
-    if(val.selected){
-        // 自己是false就为true
-        val.selected= false
-    }else{
-        // 1.取消兄弟们激活
-        item.values.forEach(item => {
-            item.selected=false
-        });
-        // 2.激活自己
-        val.selected = true
-    }
-    
-}
-
-// 生产有效字典
-const getPathMap = (goods)=>{
-    // 1.根据sku字段生产有效的sku数组
-    const effectiveSkus =goods.skus.filter(item=>{
-        return sku.inventory > 0
-    })
-
-    // 2.根据上面得到的有效的sku得到算法（子集算法）
-}
-
-=======
 const changeSelectedStatus = (item, val) => {
   if(val.disabled) return
   // item： 同排对象
@@ -129,7 +92,6 @@ const updateDisabledState = (specs, pathMap) => {
 }
 
 
->>>>>>> master
 
 </script>
 
@@ -140,17 +102,11 @@ const updateDisabledState = (specs, pathMap) => {
       <dd>
         <template v-for="val in item.values" :key="val.name">
           <!-- 图片类型规格 -->
-<<<<<<< HEAD
-          <img v-if="val.picture" :src="val.picture" :title="val.name"  :class="{'selected':val.selected == true}" @click="changeSelectedStatus(item,val)">
-          <!-- 文字类型规格 -->
-          <span :class="{'selected':val.selected == true}" v-else @click="changeSelectedStatus(item,val)">{{ val.name }}</span>
-=======
           <img v-if="val.picture" :src="val.picture" :title="val.name" :class="{ 'selected': val.selected,disabled:val.disabled }"
             @click="changeSelectedStatus(item, val)">
           <!-- 文字类型规格 -->
           <span :class="{ 'selected': val.selected == true }" v-else @click="changeSelectedStatus(item, val)">{{ val.name
           }}</span>
->>>>>>> master
         </template>
       </dd>
     </dl>
